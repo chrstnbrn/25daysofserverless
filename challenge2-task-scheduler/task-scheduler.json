@@ -127,8 +127,12 @@
               }
             }
           },
-          "fromPhoneNumber": "[parameters('fromPhoneNumber')]",
-          "toPhoneNumber": "[parameters('toPhoneNumber')]"
+          "fromPhoneNumber": {
+            "value": "[parameters('fromPhoneNumber')]"
+          },
+          "toPhoneNumber": {
+            "value": "[parameters('toPhoneNumber')]"
+          }
         }
       },
       "name": "[parameters('logicAppName')]",
