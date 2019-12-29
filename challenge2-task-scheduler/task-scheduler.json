@@ -61,23 +61,271 @@
         "definition": {
           "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
           "actions": {
-            "Send_Text_Message_(SMS)": {
-              "type": "ApiConnection",
-              "inputs": {
-                "host": {
-                  "connection": {
-                    "name": "@parameters('$connections')['twilio']['connectionId']"
-                  }
+            "8:25_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 25,
+                        "unit": "Minute"
+                    }
                 },
-                "method": "post",
-                "body": {
-                  "from": "@parameters('fromPhoneNumber')",
-                  "to": "@parameters('toPhoneNumber')",
-                  "body": "Light the candles"
+                "runAfter": {},
+                "type": "wait"
+            },
+            "8:30_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
                 },
-                "path": "/Messages.json"
-              },
-              "runAfter": {}
+                "runAfter": {
+                    "8:25_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "8:35_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "8:30_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "8:39_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 4,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "8:35_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "8:40_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 1,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "8:39_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "8:45_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "8:40_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "8:49_AM": {
+                "inputs": {
+                    "interval": {
+                        "count": 4,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "8:45_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "Send_deliver_coffee_to_mom_and_dad_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "deliver the coffee to Mom and Dad",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:35_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_deliver_coffee_to_sister_and_brother_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "deliver the coffee to Sister and Brother",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:45_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_finish_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "return to kitchen, take a break!",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:49_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_light_candles_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "light the candles",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:30_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_pour_cups_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "pour two cups",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:25_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_pour_two_more_cups_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "return to kitchen, fill two more cups",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:39_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_relight_candles_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "relight the candles",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {
+                    "8:40_AM": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_start_reminder": {
+                "inputs": {
+                    "body": {
+                        "body": "start the coffee, set out 4 cups",
+                        "from": "@parameters('fromPhoneNumber')",
+                        "to": "@parameters('toPhoneNumber')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twilio']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Messages.json"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
             }
           },
           "parameters": {
@@ -101,17 +349,21 @@
             }
           },
           "triggers": {
-            "Recurrence": {
-              "type": "Recurrence",
-              "recurrence": {
-                "frequency": "Day",
-                "interval": 1,
-                "timeZone": "W. Europe Standard Time",
-                "schedule": {
-                  "hours": ["8"],
-                  "minutes": [30, 40]
-                }
-              }
+            "Every_day_at_8:00_AM": {
+                "recurrence": {
+                    "frequency": "Day",
+                    "interval": 1,
+                    "schedule": {
+                        "hours": [
+                            "8"
+                        ],
+                        "minutes": [
+                            0
+                        ]
+                    },
+                    "timeZone": "W. Europe Standard Time"
+                },
+                "type": "Recurrence"
             }
           },
           "contentVersion": "1.0.0.0",
