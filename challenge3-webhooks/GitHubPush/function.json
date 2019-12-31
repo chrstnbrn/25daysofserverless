@@ -16,7 +16,7 @@
       "type": "queue",
       "direction": "out",
       "name": "outputQueueItems",
-      "queueName": "day3commitedpictures",
+      "queueName": "day3committedpictures",
       "connection": "AzureWebJobsStorage"
     }
   ],

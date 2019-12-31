@@ -1,5 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 
+import { PictureCommittedMessage } from '../Shared/picture-committed-message';
+
 const httpTrigger: AzureFunction = async function(
   context: Context,
   req: HttpRequest
@@ -20,20 +22,16 @@ interface PushEvent {
 }
 
 interface Repository {
-  full_name: string;
+  name: string;
+  owner: {
+    name: string;
+  };
 }
 
 interface Commit {
   id: string;
   tree_id: string;
   added: string[];
-}
-
-interface PictureCommittedMessage {
-  repositoryName: string;
-  commitId: string;
-  treeId: string;
-  path: string;
 }
 
 function isPushEvent(body: any): body is PushEvent {
@@ -53,7 +51,8 @@ function getQueueMessagesForCommit(
   repository: Repository
 ): PictureCommittedMessage[] {
   return commit.added.filter(isPng).map(path => ({
-    repositoryName: repository.full_name,
+    repositoryOwner: repository.owner.name,
+    repositoryName: repository.name,
     commitId: commit.id,
     treeId: commit.tree_id,
     path
