@@ -3,6 +3,7 @@ import * as azure from 'azure-storage';
 
 import { dishTableName } from '../Shared/configuration';
 import { Dish } from '../Shared/dish';
+import { dishEntityToDish } from '../Shared/dish-entity-to-dish';
 import { dishPartitionKey } from './../Shared/configuration';
 import { DishEntity } from './../Shared/dish-entity';
 
@@ -37,16 +38,6 @@ async function getAllDishEntities(): Promise<DishEntity[]> {
     payloadFormat: "application/json;odata=nometadata"
   };
   return queryAll<DishEntity>(tableService, dishTableName, query, options);
-}
-
-function dishEntityToDish(dishEntity: DishEntity): Dish {
-  return {
-    id: dishEntity.RowKey,
-    name: dishEntity.name,
-    dish: dishEntity.dish,
-    description: dishEntity.description,
-    portions: dishEntity.portions
-  };
 }
 
 async function queryAll<T>(
