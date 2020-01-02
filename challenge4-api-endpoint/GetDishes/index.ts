@@ -18,8 +18,8 @@ const httpTrigger: AzureFunction = async function(
     };
   } catch (error) {
     context.res = {
-      status: 500,
-      body: error
+      status: error?.statusCode ?? 500,
+      body: error?.message ?? "Error loading dishes"
     };
   }
 };
