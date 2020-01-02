@@ -1,6 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
+import * as uuidv4 from 'uuid/v4';
 
 import { DishEntity } from '../Shared/dish-entity';
+import { dishPartitionKey } from './../Shared/configuration';
 import { Dish } from './../Shared/dish';
 
 const httpTrigger: AzureFunction = async function(
@@ -9,6 +11,8 @@ const httpTrigger: AzureFunction = async function(
 ): Promise<void> {
   if (isDish(req.body)) {
     const dishEntity = new DishEntity(
+      dishPartitionKey,
+      uuidv4(),
       req.body.name,
       req.body.dish,
       req.body.description,
