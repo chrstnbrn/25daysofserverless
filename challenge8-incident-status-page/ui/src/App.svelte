@@ -8,10 +8,20 @@
 
   const apiBaseUrl = "http://localhost:7071/api";
 
-  let incidentsPromise;
+  let incidents;
+  let incidentsLoading = true;
+  let incidentsLoadingError = false;
 
-  onMount(() => {
-    incidentsPromise = getIncidents();
+  onMount(async () => {
+    try {
+      incidents = await getIncidents();
+    } catch (error) {
+      console.error(error);
+      incidentsLoadingError = true;
+    } finally {
+      incidentsLoading = false;
+    }
+
     configureSignalR();
   });
 
@@ -67,13 +77,13 @@
   </h2>
 </header>
 <main class="container pt-12 p-4 mx-auto">
-  {#await incidentsPromise}
+  {#if incidentsLoading}
     <p class="text-center">
       <LoadingSpinner />
     </p>
-  {:then incidents}
-    <IncidentStatusPage {incidents} />
-  {:catch error}
+  {:else if incidentsLoadingError}
     <p class="text-center">Error loading incident status</p>
-  {/await}
+  {:else}
+    <IncidentStatusPage {incidents} />
+  {/if}
 </main>
