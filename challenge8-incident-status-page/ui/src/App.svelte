@@ -7,6 +7,7 @@
   import LoadingSpinner from "./LoadingSpinner.svelte";
 
   const apiBaseUrl = "http://localhost:7071/api";
+  const functionsKey = "";
 
   let incidents;
   let incidentsLoading = true;
@@ -26,7 +27,7 @@
   });
 
   async function getIncidents() {
-    return await fetch(`${apiBaseUrl}/incidents`).then(res => res.json());
+    return await fetchFromApi("incidents");
   }
 
   async function configureSignalR() {
@@ -53,9 +54,7 @@
   }
 
   async function getConnection() {
-    const connectionInfo = await fetch(`${apiBaseUrl}/SignalRInfo`).then(res =>
-      res.json()
-    );
+    const connectionInfo = await fetchFromApi("SignalRInfo");
 
     const options = {
       accessTokenFactory: () => connectionInfo.accessToken
@@ -65,6 +64,11 @@
       .withUrl(connectionInfo.url, options)
       .configureLogging(LogLevel.Information)
       .build();
+  }
+
+  async function fetchFromApi(path) {
+    const url = `${apiBaseUrl}/${path}?code=${functionsKey}`;
+    return fetch(url).then(res => res.json());
   }
 </script>
 
