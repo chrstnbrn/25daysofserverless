@@ -19,6 +19,14 @@ const httpTrigger: AzureFunction = async function(
     };
 
     context.bindings.outputDocument = incident;
+
+    context.bindings.signalRMessages = [
+      {
+        target: "newIncident",
+        arguments: [incident]
+      }
+    ];
+
     context.res = {
       status: 201,
       body: incidentId

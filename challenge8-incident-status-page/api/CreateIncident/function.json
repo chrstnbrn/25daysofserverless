@@ -21,6 +21,12 @@
       "collectionName": "incidents",
       "createIfNotExists": true,
       "connectionStringSetting": "CosmosDBConnectionString"
+    },
+    {
+      "type": "signalR",
+      "name": "signalRMessages",
+      "hubName": "incidents",
+      "direction": "out"
     }
   ],
   "scriptFile": "../dist/CreateIncident/index.js"
