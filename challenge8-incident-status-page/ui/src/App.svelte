@@ -1,49 +1,20 @@
 <script>
+  import { onMount } from "svelte";
+
   import Tailwindcss from "./Tailwindcss.svelte";
   import Status from "./Status.svelte";
   import Incidents from "./Incidents.svelte";
 
-  const activeIncidents = [
-    {
-      id: "1",
-      name: "Incident 1",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      createdDate: "2020-01-05T08:05:03Z",
-      lastModifiedDate: "2020-01-05T08:05:03Z",
-      status: "open"
-    },
-    {
-      id: "2",
-      name: "Incident 2",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      createdDate: "2020-01-06T11:37:20Z",
-      lastModifiedDate: "2020-01-05T08:05:03Z",
-      status: "ongoing"
-    }
-  ];
+  let activeIncidents = [];
+  let resolvedIncidents = [];
 
-  const resolvedIncidents = [
-    {
-      id: "3",
-      name: "Incident 3",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      createdDate: "2020-01-05T08:05:03Z",
-      lastModifiedDate: "2020-01-05T08:05:03Z",
-      status: "closed"
-    },
-    {
-      id: "4",
-      name: "Incident 4",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      createdDate: "2020-01-06T11:37:20Z",
-      lastModifiedDate: "2020-01-05T08:05:03Z",
-      status: "closed"
-    }
-  ];
+  onMount(async () => {
+    const incidents = await fetch("http://localhost:7071/api/incidents").then(
+      res => res.json()
+    );
+    activeIncidents = incidents.filter(i => i.status !== "closed");
+    resolvedIncidents = incidents.filter(i => i.status === "closed");
+  });
 </script>
 
 <Tailwindcss />
