@@ -4,6 +4,7 @@
 
   import Tailwindcss from "./Tailwindcss.svelte";
   import IncidentStatusPage from "./IncidentStatusPage.svelte";
+  import LoadingSpinner from "./LoadingSpinner.svelte";
 
   const apiBaseUrl = "http://localhost:7071/api";
 
@@ -67,7 +68,9 @@
 </header>
 <main class="container pt-12 p-4 mx-auto">
   {#await incidentsPromise}
-    <p class="text-center">Loading...</p>
+    <p class="text-center">
+      <LoadingSpinner />
+    </p>
   {:then incidents}
     <IncidentStatusPage {incidents} />
   {:catch error}
