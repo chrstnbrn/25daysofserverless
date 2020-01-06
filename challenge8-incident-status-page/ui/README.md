@@ -1,12 +1,3 @@
-# Incident Status Page
-
-The Incident Status Page for [Day 8](https://github.com/microsoft/25-days-of-serverless/tree/master/week-2/challenge-8) of the 25 Days of Serverless challenge.
-
-## Technologies
-
-- Svelte
-- Tailwind
-
 ## Building and running in development mode
 
 ```bash
