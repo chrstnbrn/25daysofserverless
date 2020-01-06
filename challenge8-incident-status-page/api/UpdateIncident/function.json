@@ -1,0 +1,36 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "incidents/{id}",
+      "methods": ["put"]
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "inputDocument",
+      "databaseName": "incident-status-tracking",
+      "collectionName": "incidents",
+      "connectionStringSetting": "CosmosDBConnectionString",
+      "id": "{id}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "out",
+      "name": "outputDocument",
+      "databaseName": "incident-status-tracking",
+      "collectionName": "incidents",
+      "createIfNotExists": "true",
+      "connectionStringSetting": "CosmosDBConnectionString"
+    }
+  ],
+  "scriptFile": "../dist/UpdateIncident/index.js"
+}

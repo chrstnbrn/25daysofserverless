@@ -1,0 +1,20 @@
+{
+  "name": "challenge8-incident-status-page",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@azure/functions": "^1.0.2-beta2",
+    "@types/uuid": "^3.4.6",
+    "typescript": "^3.3.3"
+  }
+}

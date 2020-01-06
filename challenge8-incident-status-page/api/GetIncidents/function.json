@@ -1,0 +1,29 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "incidents",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "incidents",
+      "databaseName": "incident-status-tracking",
+      "collectionName": "incidents",
+      "connectionStringSetting": "CosmosDBConnectionString",
+      "sqlQuery": "select * from i order by i.lastModifiedDate desc"
+    }
+  ],
+  "scriptFile": "../dist/GetIncidents/index.js"
+}
