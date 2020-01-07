@@ -19,3 +19,7 @@ Enjoy your challenge and Happy Holidays!
 # Solution
 
 ## Technologies
+
+- GitHub Webhooks
+- GitHub REST API (@octokit/rest)
+- Azure Functions with TypeScript
