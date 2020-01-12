@@ -1,0 +1,238 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "25daysofserverless-timer-trigger",
+      "metadata": {
+        "description": "The name of the logic app."
+      }
+    },
+    "logicAppDisplayName": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "25 Days of Serverless - Timer Trigger",
+      "metadata": {
+        "description": "The display name of the logic app."
+      }
+    },
+    "azureBlobConnectionName": {
+      "type": "string",
+      "defaultValue": "azureblob"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the storage account the connector should use."
+      }
+    },
+    "azureBlobConnectionDisplayName": {
+      "type": "string",
+      "metadata": {
+        "description": "Display name of the storage account the connector should use."
+      }
+    },
+    "storageAccountAccessKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Specify a valid primary/secondary storage account access key."
+      }
+    },
+    "twitterConnectionName": {
+      "type": "string",
+      "defaultValue": "twitter",
+      "metadata": {
+        "description": "Name of the Twitter connection"
+      }
+    },
+    "twitterConnectionDisplayName": {
+      "type": "string",
+      "defaultValue": "Twitter",
+      "metadata": {
+        "description": "Display name of the Twitter connection"
+      }
+    }
+  },
+  "variables": {
+    "logicAppLocation": "[resourceGroup().location]"
+  },
+  "resources": [
+    {
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "actions": {
+            "Create_HTML_document": {
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "htmlDocument",
+                    "type": "string",
+                    "value": "<!doctype html>\n\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Deals of the Day</title>\n</head>\n\n<body>\n  <h1>Deals of the Day</h1>\n@{body('Create_HTML_table')}\n</body>\n</html>"
+                  }
+                ]
+              },
+              "runAfter": {
+                "Create_HTML_table": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Create_HTML_table": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Search_tweets')",
+                "format": "HTML",
+                "columns": [
+                  {
+                    "header": "",
+                    "value": "@item()['TweetText']"
+                  }
+                ]
+              },
+              "runAfter": {
+                "Search_tweets": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Create_blob": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')[@parameters('azureBlobConnectionName')]['connectionId']"
+                  }
+                },
+                "method": "post",
+                "body": "@variables('htmlDocument')",
+                "headers": {
+                  "Content-Type": "text/html"
+                },
+                "path": "/datasets/default/files",
+                "queries": {
+                  "folderPath": "dealsoftheday",
+                  "name": "@{utcNow('yyyy-MM-dd')}.html",
+                  "queryParametersSingleEncoded": true
+                }
+              },
+              "runAfter": {
+                "Create_HTML_document": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Search_tweets": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['twitter']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/searchtweets",
+                "queries": {
+                  "searchQuery": "#deals filter:links -filter:retweets -filter:replies since:@{utcNow('yyyy-MM-dd')}",
+                  "maxResults": 100
+                }
+              },
+              "runAfter": {}
+            }
+          },
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "Recurrence": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "timeZone": "W. Europe Standard Time",
+                "schedule": {
+                  "hours": [
+                    "22"
+                  ],
+                  "minutes": [
+                    "00"
+                  ]
+                }
+              }
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "azureblob": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', variables('logicAppLocation'), '/managedApis/', 'azureblob')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('azureBlobConnectionName'))]",
+                "connectionName": "[parameters('azureBlobConnectionName')]"
+              },
+              "twitter": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', variables('logicAppLocation'), '/managedApis/', 'twitter')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('twitterConnectionName'))]",
+                "connectionName": "[parameters('twitterConnectionName')]"
+              }
+            }
+          }
+        }
+      },
+      "name": "[parameters('logicAppName')]",
+      "type": "Microsoft.Logic/workflows",
+      "location": "[variables('logicAppLocation')]",
+      "tags": {
+        "displayName": "[parameters('logicAppDisplayName')]"
+      },
+      "apiVersion": "2016-06-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('azureBlobConnectionName'))]",
+        "[resourceId('Microsoft.Web/connections', parameters('twitterConnectionName'))]"
+      ]
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2018-07-01-preview",
+      "name": "[parameters('azureBlobConnectionName')]",
+      "location": "[variables('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', variables('logicAppLocation'), '/managedApis/', 'azureblob')]"
+        },
+        "displayName": "[parameters('azureBlobConnectionDisplayName')]",
+        "parameterValues": {
+          "accountName": "[parameters('storageAccountName')]",
+          "accessKey": "[parameters('storageAccountAccessKey')]"
+        }
+      }
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2018-07-01-preview",
+      "name": "[parameters('twitterConnectionName')]",
+      "location": "[variables('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', variables('logicAppLocation'), '/managedApis/', 'twitter')]"
+        },
+        "displayName": "[parameters('twitterConnectionDisplayName')]"
+      }
+    }
+  ],
+  "outputs": {}
+}
