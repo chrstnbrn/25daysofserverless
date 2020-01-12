@@ -17,3 +17,5 @@ As a bonus challenge: reading and parsing Markdown is a lot of work! To optimize
 - Azure Functions with TypeScript
 - [@octokit/rest](https://github.com/octokit/rest.js) to load gist content
 - [showdown](https://github.com/showdownjs/showdown) to convert Markdown to HTML
+- Azure Cache for Redis
+- [Node.js Redis client library](https://github.com/NodeRedis/node_redis)

@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@octokit/rest": "^16.36.0",
+    "redis": "^2.8.0",
     "showdown": "^1.9.1"
   },
   "devDependencies": {
     "@azure/functions": "^1.0.2-beta2",
+    "@types/redis": "^2.8.14",
     "@types/showdown": "^1.9.3",
     "typescript": "^3.3.3"
   }
