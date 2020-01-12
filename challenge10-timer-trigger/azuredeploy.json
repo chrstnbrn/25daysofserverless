@@ -22,16 +22,16 @@
       "type": "string",
       "defaultValue": "azureblob"
     },
-    "storageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the storage account the connector should use."
-      }
-    },
     "azureBlobConnectionDisplayName": {
       "type": "string",
       "metadata": {
         "description": "Display name of the storage account the connector should use."
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the storage account the connector should use."
       }
     },
     "storageAccountAccessKey": {
@@ -105,7 +105,7 @@
               "inputs": {
                 "host": {
                   "connection": {
-                    "name": "@parameters('$connections')[@parameters('azureBlobConnectionName')]['connectionId']"
+                    "name": "@parameters('$connections')['azureblob']['connectionId']"
                   }
                 },
                 "method": "post",
