@@ -28,3 +28,4 @@ As a bonus challenge: kids would love a nice UI to input their wishes. Help them
 - Azure Functions with TypeScript
 - Azure Cosmos DB
 - Slack Webhooks
+- HTML Form

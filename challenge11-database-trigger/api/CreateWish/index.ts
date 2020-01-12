@@ -1,4 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
+import * as querystring from 'querystring';
 import * as uuidv4 from 'uuid/v4';
 
 import { Wish } from '../Shared/wish';
@@ -7,15 +8,15 @@ const httpTrigger: AzureFunction = async function(
   context: Context,
   req: HttpRequest
 ): Promise<void> {
-  if (req.body) {
+  const wish = getWish(req);
+
+  if (wish) {
     const wishId = uuidv4();
 
-    const wish: Wish = {
-      ...req.body,
+    context.bindings.outputDocument = {
+      ...wish,
       id: wishId
     };
-
-    context.bindings.outputDocument = wish;
 
     context.res = {
       status: 201,
@@ -28,5 +29,13 @@ const httpTrigger: AzureFunction = async function(
     };
   }
 };
+
+function getWish(req: HttpRequest): Wish {
+  if (req.headers["content-type"] === "application/x-www-form-urlencoded") {
+    return (querystring.parse(req.body) as unknown) as Wish;
+  } else {
+    return req.body as Wish;
+  }
+}
 
 export default httpTrigger;

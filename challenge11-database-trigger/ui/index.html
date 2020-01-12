@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Submit a Wish</title>
+  </head>
+  <body>
+    <h1>Submit a Wish</h1>
+    <form action="http://localhost:7071/api/wishes" method="post">
+      <p>
+        <label>
+          From
+          <input type="text" name="from" required />
+        </label>
+      </p>
+
+      <p>
+        <label>
+          Description<br />
+          <textarea name="description" cols="30" rows="10" required></textarea>
+        </label>
+      </p>
+      <p>
+        <label>
+          Type of Present
+          <select name="typeOfPresent" required>
+            <option value="toy">Toy</option>
+            <option value="clothes">Clothes</option>
+            <option value="animal">Animal</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Address<br />
+          <textarea name="address" cols="30" rows="10" required></textarea>
+        </label>
+      </p>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
