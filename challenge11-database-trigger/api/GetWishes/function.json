@@ -1,0 +1,26 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "wishes",
+      "methods": ["get"]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "wishes",
+      "databaseName": "Wishes",
+      "collectionName": "Wishes",
+      "connectionStringSetting": "COSMOS_DB_CONNECTION_STRING"
+    }
+  ],
+  "scriptFile": "../dist/GetWishes/index.js"
+}

@@ -1,0 +1,15 @@
+{
+  "bindings": [
+    {
+      "type": "cosmosDBTrigger",
+      "name": "wishes",
+      "direction": "in",
+      "leaseCollectionName": "leases",
+      "connectionStringSetting": "COSMOS_DB_CONNECTION_STRING",
+      "databaseName": "Wishes",
+      "collectionName": "Wishes",
+      "createLeaseCollectionIfNotExists": "true"
+    }
+  ],
+  "scriptFile": "../dist/PostWishToSlack/index.js"
+}
