@@ -17,3 +17,7 @@ Hint: you might want to look into Azure SignalR Service!
 # Solution
 
 ## Technologies
+
+- Azure Functions with TypeScript
+- Azure SignalR Service
+- Svelte
