@@ -1,7 +1,7 @@
-name: CI
+name: CD
 
 on:
-  pull_request:
+  push:
     branches:
       - master
     paths:
@@ -20,10 +20,8 @@ jobs:
       - name: "Run npm"
         shell: bash
         run: |
-          # If your function app project is not located in your repository's root
-          # Please change your directory for npm in pushd
           pushd challenge16-ci-and-cd-for-azure-functions
-          npm install
+          npm ci
           npm run build --if-present
           npm run test --if-present
           popd
