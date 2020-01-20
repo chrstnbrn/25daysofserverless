@@ -31,3 +31,4 @@ jobs:
         with:
           app-name: 25daysofserverless-day16
           publish-profile: ${{ secrets.SCM_CREDENTIALS }}
+          package: "challenge16-ci-and-cd-for-azure-functions/dist"
