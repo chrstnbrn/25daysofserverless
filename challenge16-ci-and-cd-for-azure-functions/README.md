@@ -13,3 +13,5 @@ A couple of months back, Xanath offered to put together a list of hosts and loca
 ## Technologies
 
 - Azure Functions with TypeScript
+- GitHub Actions for CI/CD
+- jest, ts-jest and jest-json-schema for testing
