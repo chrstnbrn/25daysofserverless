@@ -7,11 +7,16 @@
     "watch": "tsc -w",
     "prestart": "npm run build",
     "start": "func start",
-    "test": "echo \"No tests yet...\""
+    "test": "jest"
   },
   "dependencies": {},
   "devDependencies": {
     "@azure/functions": "^1.0.2-beta2",
+    "@types/jest": "^24.9.0",
+    "@types/jest-json-schema": "^2.1.1",
+    "jest": "^24.9.0",
+    "jest-json-schema": "^2.1.0",
+    "ts-jest": "^24.3.0",
     "typescript": "^3.3.3"
   }
 }
