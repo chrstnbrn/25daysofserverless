@@ -14,5 +14,13 @@
       "latitude": 19.408081,
       "longitude": -99.150218
     }
+  },
+  {
+    "date": "2019-12-18",
+    "host": "Antonio",
+    "location": {
+      "latitude": 19.468952,
+      "longitude": -99.166296
+    }
   }
 ]
