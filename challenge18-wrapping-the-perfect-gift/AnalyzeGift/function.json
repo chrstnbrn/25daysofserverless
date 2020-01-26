@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "gifts/{name}",
+      "connection": "AZURE_BLOB_STORAGE"
+    },
+    {
+      "type": "blob",
+      "direction": "out",
+      "name": "outputBlob",
+      "path": "perfect-gifts/{name}",
+      "connection": "AZURE_BLOB_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/AnalyzeGift/index.js"
+}
